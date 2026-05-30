@@ -25,7 +25,11 @@ if (hasFirebaseConfig) {
     console.error("Failed to initialize Firebase:", error);
   }
 } else {
-  console.warn("Firebase configuration is missing or incomplete. Using memory fallback for development.");
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("CRITICAL ERROR: Firebase configuration environment variables (NEXT_PUBLIC_FIREBASE_PROJECT_ID, NEXT_PUBLIC_FIREBASE_API_KEY) are missing in production!");
+  } else {
+    console.warn("Firebase configuration is missing or incomplete. Using memory fallback for development.");
+  }
 }
 
 // In-memory fallback usage database for development when Firebase is not configured
